@@ -24,7 +24,7 @@ import com.example.switchit.ui.theme.blueBackground
 @Composable
 fun SwitchScreen(
     onCheckedSwitch: (MutableIntState, MutableFloatState, MutableState<Boolean>) -> Unit,
-    restartPlay: (MutableIntState, MutableFloatState, MutableState<Boolean>) -> Unit,
+    restartPlay: (MutableIntState, MutableIntState, MutableFloatState, MutableState<Boolean>) -> Unit,
 ) {
     val countPlayerBlue = remember { mutableIntStateOf(0) }
     val countPlayerRed = remember { mutableIntStateOf(0) }
@@ -42,7 +42,7 @@ fun SwitchScreen(
         PlayerBlueSwitch(countPlayerBlue, topCount, visibilityButtonRestart, onCheckedSwitch)
         PlayerRedSwitch(countPlayerRed, topCount, visibilityButtonRestart, onCheckedSwitch)
         if (visibilityButtonRestart.value) ButtonRestart {
-            restartPlay.invoke(countPlayerBlue, topCount, visibilityButtonRestart)
+            restartPlay.invoke(countPlayerBlue, countPlayerRed, topCount, visibilityButtonRestart)
         } else SliderTopCount(topCount, visibilityButtonRestart)
     }
 }

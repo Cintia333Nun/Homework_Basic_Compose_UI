@@ -20,11 +20,13 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun restartPlay(
-        count: MutableIntState,
+        countBlue: MutableIntState,
+        countRed: MutableIntState,
         topCount: MutableFloatState,
         visibilityButtonRestart: MutableState<Boolean>
     ) {
-        count.intValue = 0
+        countBlue.intValue = 0
+        countRed.intValue = 0
         topCount.floatValue = 1F
         visibilityButtonRestart.value = false
     }
