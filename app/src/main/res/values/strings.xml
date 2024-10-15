@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Switch It</string>
+    <string name="top_count_string">Meta a alcanzar: %1$s</string>
+    <string name="switch_it">Switch It!</string>
+    <string name="count_string">Contador: %1$s</string>
+    <string name="restart_play">Reiniciar juego</string>
+</resources>
