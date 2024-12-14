@@ -6,8 +6,6 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableFloatState
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -18,19 +16,20 @@ import com.example.switchit.ui.theme.blue
 
 @Composable
 fun SliderTopCount(
-    topCount: MutableFloatState,
-    visibilityButtonRestart: MutableState<Boolean>
+    topCount: Float,
+    visibilityButtonRestart: Boolean,
+    onValueChange: (Float) -> Unit
 ) {
     Text(
         modifier = Modifier.padding(top = 10.dp),
-        text = stringResource(R.string.top_count_string, topCount.floatValue.toInt()),
+        text = stringResource(R.string.top_count_string, topCount.toInt()),
         fontWeight = FontWeight.Bold,
     )
     Slider(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp),
-        value = topCount.floatValue,
+        value = topCount,
         valueRange = 1F .. 10F,
         steps = 8,
         colors = SliderColors(
@@ -45,7 +44,7 @@ fun SliderTopCount(
             disabledInactiveTrackColor = Color.Gray,
             disabledInactiveTickColor = Color.Gray
         ),
-        onValueChange = {topCount.floatValue = it},
-        enabled = !visibilityButtonRestart.value
+        onValueChange = { onValueChange(it) },
+        enabled = !visibilityButtonRestart
     )
 }

@@ -4,16 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableFloatState
-import androidx.compose.runtime.MutableIntState
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.example.switchit.MainViewModel
 import com.example.switchit.ui.components.ButtonRestart
 import com.example.switchit.ui.components.PlayerBlueSwitch
 import com.example.switchit.ui.components.PlayerRedSwitch
@@ -22,15 +17,13 @@ import com.example.switchit.ui.components.TitleText
 import com.example.switchit.ui.theme.blueBackground
 
 @Composable
-fun SwitchScreen(
-    onCheckedSwitch: (MutableIntState, MutableFloatState, MutableState<Boolean>) -> Unit,
-    restartPlay: (MutableIntState, MutableIntState, MutableFloatState, MutableState<Boolean>) -> Unit,
-) {
-    val countPlayerBlue = remember { mutableIntStateOf(0) }
-    val countPlayerRed = remember { mutableIntStateOf(0) }
-    val topCount = remember { mutableFloatStateOf(1F) }
+fun SwitchScreen(viewModel: MainViewModel) {
 
-    val visibilityButtonRestart = remember { mutableStateOf(false) }
+    val countPlayerBlue = viewModel.countPlayerBlue.collectAsState()
+    val countPlayerRed = viewModel.countPlayerRed.collectAsState()
+    val topCount = viewModel.topCount.collectAsState()
+
+    val visibilityButtonRestart = viewModel.visibilityButtonRestart.collectAsState()
 
     Column(
         modifier = Modifier
@@ -39,10 +32,15 @@ fun SwitchScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TitleText()
-        PlayerBlueSwitch(countPlayerBlue, topCount, visibilityButtonRestart, onCheckedSwitch)
-        PlayerRedSwitch(countPlayerRed, topCount, visibilityButtonRestart, onCheckedSwitch)
-        if (visibilityButtonRestart.value) ButtonRestart {
-            restartPlay.invoke(countPlayerBlue, countPlayerRed, topCount, visibilityButtonRestart)
-        } else SliderTopCount(topCount, visibilityButtonRestart)
+        PlayerBlueSwitch(count = countPlayerBlue.value, visibilityButtonRestart = visibilityButtonRestart.value) {
+            viewModel.onCheckedSwitchBlue()
+        }
+        PlayerRedSwitch(count = countPlayerRed.value, visibilityButtonRestart = visibilityButtonRestart.value) {
+            viewModel.onCheckedSwitchRed()
+        }
+        if (visibilityButtonRestart.value)
+            ButtonRestart { viewModel.restartPlay() }
+        else
+            SliderTopCount(topCount.value, visibilityButtonRestart.value) { value -> viewModel.setTopCount(value)}
     }
 }
