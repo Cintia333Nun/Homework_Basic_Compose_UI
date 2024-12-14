@@ -6,9 +6,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableFloatState
-import androidx.compose.runtime.MutableIntState
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,10 +20,9 @@ import com.example.switchit.ui.theme.red
 
 @Composable
 fun PlayerBlueSwitch(
-    count: MutableIntState,
-    topCount: MutableFloatState,
-    visibilityButtonRestart: MutableState<Boolean>,
-    onCheckedSwitch: (MutableIntState, MutableFloatState, MutableState<Boolean>) -> Unit
+    count: Int,
+    visibilityButtonRestart: Boolean,
+    onCheckedSwitch: () -> Unit
 ) {
     Switch(
         modifier = Modifier
@@ -51,25 +47,24 @@ fun PlayerBlueSwitch(
             disabledUncheckedIconColor = Color.White,
         ),
         onCheckedChange = {
-            onCheckedSwitch.invoke(count, topCount, visibilityButtonRestart)
+            onCheckedSwitch.invoke()
         },
         thumbContent = null,
-        enabled = !visibilityButtonRestart.value,
+        enabled = !visibilityButtonRestart,
         interactionSource = remember { MutableInteractionSource() }
     )
     Text(
         modifier = Modifier.padding(bottom = 26.dp),
-        text = stringResource(R.string.count_string, count.intValue),
+        text = stringResource(R.string.count_string, count),
         fontWeight = FontWeight.Bold,
     )
 }
 
 @Composable
 fun PlayerRedSwitch(
-    count: MutableIntState,
-    topCount: MutableFloatState,
-    visibilityButtonRestart: MutableState<Boolean>,
-    onCheckedSwitch: (MutableIntState, MutableFloatState, MutableState<Boolean>) -> Unit
+    count: Int,
+    visibilityButtonRestart: Boolean,
+    onCheckedSwitch: () -> Unit
 ) {
     Switch(
         modifier = Modifier
@@ -94,15 +89,15 @@ fun PlayerRedSwitch(
             disabledUncheckedIconColor = Color.White,
         ),
         onCheckedChange = {
-            onCheckedSwitch.invoke(count, topCount, visibilityButtonRestart)
+            onCheckedSwitch.invoke()
         },
         thumbContent = null,
-        enabled = !visibilityButtonRestart.value,
+        enabled = !visibilityButtonRestart,
         interactionSource = remember { MutableInteractionSource() }
     )
     Text(
         modifier = Modifier.padding(bottom = 26.dp),
-        text = stringResource(R.string.count_string, count.intValue),
+        text = stringResource(R.string.count_string, count),
         fontWeight = FontWeight.Bold
     )
 }
